@@ -1,9 +1,9 @@
-// ── Config ──
+// -- Config --
 const CONTRACT_ADDRESS = '0x58E9A0c9A997B8276Def81548A003A827A917C91';
 const SEPOLIA_CHAIN_ID = '0xaa36a7'; // 11155111 in hex
-const TOKEN_DECIMALS = 18; // standard ERC-20; adjust if yours differs
+const TOKEN_DECIMALS = 18;
 
-// Minimal ERC-20 ABI — only what we need
+// Minimal ERC-20 ABI
 const ERC20_ABI = [
   'function balanceOf(address owner) view returns (uint256)',
   'function symbol() view returns (string)',
@@ -11,46 +11,40 @@ const ERC20_ABI = [
   'function transfer(address to, uint256 amount) returns (bool)'
 ];
 
-// ── State ──
+// -- State --
 let provider = null;
 let userAddress = null;
 
-// ── Wait for ethereum to be injected ──
+// -- Wait for ethereum to be injected --
 function getEthereum() {
   return new Promise((resolve) => {
     if (window.ethereum) return resolve(window.ethereum);
-    // MetaMask sometimes injects slightly after page load
     window.addEventListener('ethereum#initialized', () => resolve(window.ethereum), { once: true });
     setTimeout(() => resolve(window.ethereum || null), 3000);
   });
 }
 
-// ── Connect Wallet ──
+// -- Connect Wallet --
 async function connectWallet() {
   const ethereum = await getEthereum();
   if (!ethereum) {
     alert('No wallet detected. Please install MetaMask or a compatible browser wallet.');
     return;
   }
-  // Ensure we always use the live reference
   window.ethereum = ethereum;
 
   try {
-    // Request account access
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     userAddress = accounts[0];
 
-    // Check we're on Sepolia
     const chainId = await window.ethereum.request({ method: 'eth_chainId' });
     if (chainId !== SEPOLIA_CHAIN_ID) {
       try {
-        // Ask the wallet to switch to Sepolia
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: SEPOLIA_CHAIN_ID }]
         });
       } catch (switchErr) {
-        // Sepolia not added yet — add it
         if (switchErr.code === 4902) {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
@@ -72,7 +66,6 @@ async function connectWallet() {
     await fetchBalance();
     updateUI(true);
 
-    // Listen for account or chain changes
     window.ethereum.on('accountsChanged', handleAccountsChanged);
     window.ethereum.on('chainChanged', () => window.location.reload());
 
@@ -82,7 +75,7 @@ async function connectWallet() {
   }
 }
 
-// ── Fetch OKH balance ──
+// -- Fetch OKH balance --
 async function fetchBalance() {
   try {
     const signer = await provider.getSigner();
@@ -94,19 +87,18 @@ async function fetchBalance() {
     ]);
 
     const formatted = ethers.formatUnits(rawBalance, decimals);
-    // Show up to 4 decimal places, strip trailing zeros
     const display = parseFloat(formatted).toLocaleString(undefined, {
       maximumFractionDigits: 4
     });
 
-    document.getElementById('wallet-balance').textContent = `${display} OKH`;
+    document.getElementById('wallet-balance').textContent = display + ' OKH';
   } catch (err) {
     console.error('Balance fetch failed:', err);
     document.getElementById('wallet-balance').textContent = 'Balance unavailable';
   }
 }
 
-// ── Update UI state ──
+// -- Update UI state --
 function updateUI(connected) {
   const btn = document.getElementById('wallet-btn');
   const panel = document.getElementById('wallet-panel');
@@ -124,10 +116,8 @@ function updateUI(connected) {
     btn.classList.add('connected');
     addrEl.textContent = userAddress;
     panel.classList.add('visible');
-    // Show transfer form
     form.style.display = 'flex';
     notice.style.display = 'none';
-    // Show deposit address
     depositAddr.textContent = userAddress;
     depositContent.style.display = 'flex';
     depositNotice.style.display = 'none';
@@ -137,30 +127,27 @@ function updateUI(connected) {
     panel.classList.remove('visible');
     document.getElementById('wallet-balance').textContent = '';
     document.getElementById('wallet-address').textContent = '';
-    // Hide transfer form
     form.style.display = 'none';
     notice.style.display = 'block';
     statusEl.textContent = '';
     statusEl.className = 'transfer-status';
-    // Hide deposit address
     depositContent.style.display = 'none';
     depositNotice.style.display = 'block';
     depositAddr.textContent = '';
   }
 }
 
-// ── Disconnect ──
+// -- Disconnect --
 function disconnectWallet() {
   provider = null;
   userAddress = null;
   updateUI(false);
-
   if (window.ethereum) {
     window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
   }
 }
 
-// ── Handle account switch ──
+// -- Handle account switch --
 async function handleAccountsChanged(accounts) {
   if (accounts.length === 0) {
     disconnectWallet();
@@ -171,7 +158,7 @@ async function handleAccountsChanged(accounts) {
   }
 }
 
-// ── Transfer OKH tokens ──
+// -- Transfer OKH tokens --
 async function transferTokens(event) {
   event.preventDefault();
 
@@ -180,28 +167,26 @@ async function transferTokens(event) {
   const statusEl = document.getElementById('transfer-status');
   const submitBtn = document.getElementById('transfer-btn');
 
-  // Clear previous status
   statusEl.textContent = '';
   statusEl.className = 'transfer-status';
 
-  // Basic validation
   if (!recipient || !ethers.isAddress(recipient)) {
-    setTransferStatus('error', '⚠ Please enter a valid Ethereum address.');
+    setTransferStatus('error', 'Please enter a valid Ethereum address.');
     return;
   }
   if (!amountInput || isNaN(amountInput) || parseFloat(amountInput) <= 0) {
-    setTransferStatus('error', '⚠ Please enter a valid amount greater than 0.');
+    setTransferStatus('error', 'Please enter a valid amount greater than 0.');
     return;
   }
   if (!provider || !userAddress) {
-    setTransferStatus('error', '⚠ Wallet not connected.');
+    setTransferStatus('error', 'Wallet not connected.');
     return;
   }
 
   try {
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-    setTransferStatus('pending', '⏳ Waiting for wallet confirmation…');
+    submitBtn.textContent = 'Sending...';
+    setTransferStatus('pending', 'Waiting for wallet confirmation...');
 
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, ERC20_ABI, signer);
@@ -209,26 +194,24 @@ async function transferTokens(event) {
     const amount = ethers.parseUnits(amountInput, decimals);
 
     const tx = await contract.transfer(recipient, amount);
-    setTransferStatus('pending', '⏳ Transaction submitted. Waiting for confirmation…');
+    setTransferStatus('pending', 'Transaction submitted. Waiting for confirmation...');
 
     await tx.wait();
 
-    // Clear form on success
     document.getElementById('recipient').value = '';
     document.getElementById('amount').value = '';
 
     setTransferStatus(
       'success',
-      `✅ Transfer confirmed! <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer">View on Etherscan ↗</a>`
+      'Transfer confirmed! <a href="https://sepolia.etherscan.io/tx/' + tx.hash + '" target="_blank" rel="noopener noreferrer">View on Etherscan</a>'
     );
 
-    // Refresh balance
     await fetchBalance();
 
   } catch (err) {
     console.error('Transfer failed:', err);
     const msg = err?.reason || err?.message || 'Transaction failed.';
-    setTransferStatus('error', `⚠ ${msg}`);
+    setTransferStatus('error', msg);
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = 'Send OKH';
@@ -238,10 +221,10 @@ async function transferTokens(event) {
 function setTransferStatus(type, html) {
   const el = document.getElementById('transfer-status');
   el.innerHTML = html;
-  el.className = `transfer-status ${type}`;
+  el.className = 'transfer-status ' + type;
 }
 
-// ── Copy deposit (wallet) address to clipboard ──
+// -- Copy deposit address --
 function copyDepositAddress() {
   const address = document.getElementById('deposit-address').textContent;
   const btn = document.getElementById('deposit-copy-btn');
@@ -267,7 +250,7 @@ function copyDepositAddress() {
   });
 }
 
-// ── Copy contract address to clipboard ──
+// -- Copy contract address --
 function copyAddress() {
   const address = document.getElementById('contract-address').textContent;
   const btn = document.querySelector('.copy-btn');
@@ -276,7 +259,6 @@ function copyAddress() {
     btn.textContent = 'Copied!';
     btn.style.background = 'var(--accent)';
     btn.style.color = '#000';
-
     setTimeout(() => {
       btn.textContent = 'Copy';
       btn.style.background = '';
@@ -289,37 +271,36 @@ function copyAddress() {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-
     btn.textContent = 'Copied!';
     setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
   });
 }
 
-// ── AI Assistant (Gemini via backend proxy) ──
+// -- AI Assistant (Gemini via Cloudflare Pages Function) --
 
 const CHAT_API_URL = '/api/chat';
 let chatHistory = [];
 let chatOpen = false;
 
-// Greet on first open
 function initChatGreeting() {
   if (chatHistory.length === 0) {
-    appendChatMessage('model', 'Hi! I\'m the OKH Assistant. Ask me anything about Okhrakhushi, how to use this site, or Ethereum basics.');
+    appendChatMessage('model', "Hi! I'm the OKH Assistant. Ask me anything about Okhrakhushi, how to use this site, or Ethereum basics.");
   }
 }
 
-// ── Toggle chat panel open/closed ──
 function toggleChat() {
   chatOpen = !chatOpen;
   const panel = document.getElementById('chat-panel');
   panel.classList.toggle('open', chatOpen);
   if (chatOpen) {
     initChatGreeting();
-    setTimeout(() => document.getElementById('chat-input')?.focus(), 300);
+    setTimeout(() => {
+      var inp = document.getElementById('chat-input');
+      if (inp) inp.focus();
+    }, 300);
   }
 }
 
-// ── Send message to backend proxy ──
 async function sendChatMessage() {
   const inputEl = document.getElementById('chat-input');
   const sendBtn = document.getElementById('chat-send-btn');
@@ -327,7 +308,7 @@ async function sendChatMessage() {
   if (!text) return;
 
   appendChatMessage('user', text);
-  chatHistory.push({ role: 'user', parts: [{ text }] });
+  chatHistory.push({ role: 'user', parts: [{ text: text }] });
 
   inputEl.value = '';
   inputEl.style.height = 'auto';
@@ -345,7 +326,7 @@ async function sendChatMessage() {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data?.error || `Server error ${response.status}`);
+      throw new Error(data?.error || 'Server error ' + response.status);
     }
 
     const reply = data.reply;
@@ -356,7 +337,7 @@ async function sendChatMessage() {
   } catch (err) {
     console.error('Chat error:', err);
     showTyping(false);
-    appendChatMessage('error', `⚠ ${err.message || 'Could not reach the assistant. Is the server running?'}`);
+    appendChatMessage('error', err.message || 'Could not reach the assistant.');
   } finally {
     inputEl.disabled = false;
     sendBtn.disabled = false;
@@ -364,11 +345,10 @@ async function sendChatMessage() {
   }
 }
 
-// ── Append a message bubble ──
 function appendChatMessage(role, text) {
   const container = document.getElementById('chat-messages');
   const bubble = document.createElement('div');
-  bubble.className = `chat-bubble chat-bubble--${role}`;
+  bubble.className = 'chat-bubble chat-bubble--' + role;
 
   const safe = text
     .replace(/&/g, '&amp;')
@@ -384,12 +364,10 @@ function appendChatMessage(role, text) {
   container.scrollTop = container.scrollHeight;
 }
 
-// ── Typing indicator ──
 function showTyping(visible) {
-  document.getElementById('chat-typing').textContent = visible ? 'OKH Assistant is thinking…' : '';
+  document.getElementById('chat-typing').textContent = visible ? 'OKH Assistant is thinking...' : '';
 }
 
-// ── Send on Enter (Shift+Enter = newline) ──
 function handleChatKey(event) {
   if (event.key === 'Enter' && !event.shiftKey) {
     event.preventDefault();
@@ -397,16 +375,15 @@ function handleChatKey(event) {
   }
 }
 
-// ── Auto-resize textarea ──
 function autoResizeTextarea(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 
-// ── Fade-in on scroll ──
+// -- Fade-in on scroll --
 const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach(entry => {
+  function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
         entry.target.style.transform = 'translateY(0)';
@@ -416,7 +393,7 @@ const observer = new IntersectionObserver(
   { threshold: 0.1 }
 );
 
-document.querySelectorAll('.card, .contract-box').forEach(el => {
+document.querySelectorAll('.card, .contract-box').forEach(function(el) {
   el.style.opacity = '0';
   el.style.transform = 'translateY(24px)';
   el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
