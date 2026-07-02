@@ -616,44 +616,6 @@ code#contract-address {
 }
 
 /* ── AI Chat Widget ── */
-.chat-widget {
-  position: fixed;
-  bottom: 1.75rem;
-  right: 1.75rem;
-  z-index: 200;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.75rem;
-}
-
-/* Floating action button */
-.chat-fab {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, #4a7a18 100%);
-  border: none;
-  color: #000;
-  font-size: 1.4rem;
-  cursor: pointer;
-  box-shadow: 0 4px 20px rgba(122, 182, 72, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s, box-shadow 0.2s;
-  flex-shrink: 0;
-}
-
-.chat-fab:hover {
-  transform: scale(1.08);
-  box-shadow: 0 6px 28px rgba(122, 182, 72, 0.6);
-}
-
-.chat-fab-icon {
-  line-height: 1;
-  display: block;
-}
 
 /* Chat panel */
 .chat-panel {
@@ -667,6 +629,7 @@ code#contract-address {
   flex-direction: column;
   overflow: hidden;
   max-height: 520px;
+  z-index: 99999;
 
   /* Hidden by default */
   opacity: 0;

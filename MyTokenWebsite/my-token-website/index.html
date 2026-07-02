@@ -159,11 +159,11 @@
   </footer>
 
   <!-- ── AI Assistant Widget ── -->
-  <div class="chat-widget" id="chat-widget" aria-label="OKH AI Assistant">
+  <div id="chat-widget" style="position:fixed;bottom:1.75rem;right:1.75rem;z-index:99999;display:flex;flex-direction:column;align-items:flex-end;gap:0.75rem;">
 
     <!-- Floating toggle button -->
-    <button class="chat-fab" id="chat-fab" onclick="toggleChat()" aria-label="Open AI Assistant" title="Ask the OKH Assistant">
-      <span class="chat-fab-icon" id="chat-fab-icon">✦</span>
+    <button id="chat-fab" onclick="toggleChat()" aria-label="Open AI Assistant" title="Ask the OKH Assistant" style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#7ab648 0%,#4a7a18 100%);border:none;color:#000;font-size:1.5rem;cursor:pointer;box-shadow:0 4px 24px rgba(122,182,72,0.55);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <span id="chat-fab-icon">✦</span>
     </button>
 
     <!-- Chat panel -->
