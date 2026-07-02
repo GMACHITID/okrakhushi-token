@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Okhrakhushi (OKH) Token</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- ethers.js v6 for wallet interaction -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="stars"></div>
+
+  <header>
+    <div class="logo">OKH</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#deposit">Deposit</a>
+      <a href="#transfer">Transfer</a>
+      <a href="#contract">Contract</a>
+    </nav>
+    <button class="wallet-btn" id="wallet-btn" onclick="connectWallet()">Connect Wallet</button>
+  </header>
+
+  <!-- Wallet balance panel (hidden until connected) -->
+  <div class="wallet-panel" id="wallet-panel" aria-live="polite">
+    <div class="wallet-info">
+      <span class="wallet-address" id="wallet-address"></span>
+      <span class="wallet-balance" id="wallet-balance"></span>
+    </div>
+    <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect</button>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="token-badge">ERC-20 · Sepolia Testnet</div>
+        <h1>Okhrakhushi</h1>
+        <span class="symbol">$OKH</span>
+        <p class="tagline">Crunchy, liquid yet solid.<br>A paradox of a coin.</p>
+      </div>
+      <div class="hero-visual">
+        <div class="coin">
+          <span>OKH</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="card-section">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>What is OKH?</h3>
+        <p>Okhrakhushi is a token that defies definition. It is crunchy, liquid yet solid — a paradox of a coin that challenges the very nature of what a token can be.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <h3>Built on Ethereum</h3>
+        <p>Deployed on the Sepolia testnet as a fully compliant ERC-20 token, Okhrakhushi is verifiable and transparent on the blockchain.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌀</div>
+        <h3>The Paradox</h3>
+        <p>How can something be crunchy and liquid at the same time? OKH doesn't answer that question — it <em>is</em> that question.</p>
+      </div>
+    </section>
+
+    <section id="deposit" class="deposit-section">
+      <h2>Deposit OKH</h2>
+      <div class="deposit-box">
+        <div class="deposit-notice" id="deposit-notice">
+          Connect your wallet to see your deposit address.
+        </div>
+        <div class="deposit-content" id="deposit-content">
+          <p class="deposit-hint">Send OKH to your wallet address below. Anyone on Sepolia can send you tokens directly.</p>
+          <div class="deposit-address-wrapper">
+            <div class="deposit-icon">⬇</div>
+            <code class="deposit-address" id="deposit-address"></code>
+            <button class="copy-btn" id="deposit-copy-btn" onclick="copyDepositAddress()">Copy</button>
+          </div>
+          <p class="deposit-sub">Make sure the sender is on <strong>Ethereum Sepolia Testnet</strong> and sending to the OKH contract.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="transfer" class="transfer-section">
+      <h2>Transfer OKH</h2>
+      <div class="transfer-box" id="transfer-box">
+        <div class="transfer-notice" id="transfer-notice">
+          Connect your wallet to send OKH tokens.
+        </div>
+        <form id="transfer-form" class="transfer-form" onsubmit="transferTokens(event)" novalidate>
+          <div class="transfer-field">
+            <label for="recipient">Recipient Address</label>
+            <input
+              type="text"
+              id="recipient"
+              placeholder="0x..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <div class="transfer-field">
+            <label for="amount">Amount <span class="label-hint">OKH</span></label>
+            <input
+              type="number"
+              id="amount"
+              placeholder="0.0"
+              min="0"
+              step="any"
+            />
+          </div>
+          <button type="submit" class="transfer-btn" id="transfer-btn">Send OKH</button>
+        </form>
+        <div class="transfer-status" id="transfer-status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="contract" class="contract-section">
+      <h2>Contract Details</h2>
+      <div class="contract-box">
+        <div class="contract-row">
+          <span class="label">Name</span>
+          <span class="value">Okhrakhushi</span>
+        </div>
+        <div class="contract-row">
+          <span class="label">Symbol</span>
+          <span class="value">OKH</span>
+        </div>
+        <div class="contract-row">
+          <span class="label">Network</span>
+          <span class="value">Ethereum Sepolia Testnet</span>
+        </div>
+        <div class="contract-row">
+          <span class="label">Standard</span>
+          <span class="value">ERC-20</span>
+        </div>
+        <div class="contract-row address-row">
+          <span class="label">Contract Address</span>
+          <div class="address-wrapper">
+            <code id="contract-address">0x58E9A0c9A997B8276Def81548A003A827A917C91</code>
+            <button class="copy-btn" onclick="copyAddress()">Copy</button>
+          </div>
+        </div>
+        <a
+          class="etherscan-btn"
+          href="https://sepolia.etherscan.io/address/0x58E9A0c9A997B8276Def81548A003A827A917C91"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View on Etherscan ↗
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Okhrakhushi &copy; 2026 · <span class="footer-symbol">$OKH</span> · Deployed on Sepolia</p>
+  </footer>
+
+  <!-- ── AI Assistant Widget ── -->
+  <div class="chat-widget" id="chat-widget" aria-label="OKH AI Assistant">
+
+    <!-- Floating toggle button -->
+    <button class="chat-fab" id="chat-fab" onclick="toggleChat()" aria-label="Open AI Assistant" title="Ask the OKH Assistant">
+      <span class="chat-fab-icon" id="chat-fab-icon">✦</span>
+    </button>
+
+    <!-- Chat panel -->
+    <div class="chat-panel" id="chat-panel" role="dialog" aria-label="OKH AI Assistant" aria-modal="false">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <span class="chat-header-icon">✦</span>
+          <div>
+            <div class="chat-header-title">OKH Assistant</div>
+            <div class="chat-header-sub">Powered by Gemini</div>
+          </div>
+        </div>
+        <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">✕</button>
+      </div>
+
+      <!-- Chat body -->
+      <div class="chat-body" id="chat-body">
+        <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+        <div class="chat-typing" id="chat-typing" aria-live="polite"></div>
+        <div class="chat-input-row">
+          <textarea
+            id="chat-input"
+            class="chat-input"
+            placeholder="Ask anything about OKH…"
+            rows="1"
+            onkeydown="handleChatKey(event)"
+            oninput="autoResizeTextarea(this)"
+          ></textarea>
+          <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()" aria-label="Send message">➤</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
