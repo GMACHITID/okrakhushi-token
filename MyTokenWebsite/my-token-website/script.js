@@ -297,7 +297,7 @@ function copyAddress() {
 
 // ── AI Assistant (Gemini via backend proxy) ──
 
-const CHAT_API_URL = 'http://localhost:3001/api/chat';
+const CHAT_API_URL = '/api/chat';
 let chatHistory = [];
 let chatOpen = false;
 
