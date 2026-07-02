@@ -1,8 +1,9 @@
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://generativelanguage.googleapis.com https://rpc.sepolia.org https://sepolia.etherscan.io; font-src 'self';
+  Content-Type: text/html; charset=utf-8
+
 /*.js
   Content-Type: application/javascript; charset=utf-8
 
 /*.css
   Content-Type: text/css; charset=utf-8
-
-/*.html
-  Content-Type: text/html; charset=utf-8
