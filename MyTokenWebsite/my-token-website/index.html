@@ -159,27 +159,30 @@
   </footer>
 
   <!-- ── AI Assistant Widget ── -->
-  <div id="chat-widget" style="position:fixed;bottom:1.75rem;right:1.75rem;z-index:99999;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:0.75rem;">
+  <style>
+    #chat-widget{position:fixed!important;bottom:1.5rem!important;right:1.5rem!important;z-index:2147483647!important;display:flex!important;flex-direction:column-reverse!important;align-items:flex-end!important;gap:.75rem!important;pointer-events:auto!important;}
+    #chat-fab{width:64px!important;height:64px!important;border-radius:50%!important;border:2px solid #9dd463!important;padding:0!important;cursor:pointer!important;box-shadow:0 4px 24px rgba(122,182,72,.7)!important;overflow:hidden!important;background:#13131a!important;display:block!important;flex-shrink:0!important;}
+    #chat-fab img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important;display:block!important;}
+  </style>
 
-    <!-- Floating toggle button — rendered first in column-reverse so it stays at bottom -->
-    <button id="chat-fab" onclick="toggleChat()" aria-label="Open AI Assistant" title="Ask the OKH Assistant" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#7ab648 0%,#4a7a18 100%);border:2px solid #9dd463;color:#000;font-size:1.6rem;font-weight:900;cursor:pointer;box-shadow:0 4px 24px rgba(122,182,72,0.7);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;">
-      <span id="chat-fab-icon" style="display:block;line-height:1;font-style:normal;">AI</span>
+  <div id="chat-widget">
+
+    <button id="chat-fab" onclick="toggleChat()" aria-label="Open AI Assistant" title="Ask the OKH Assistant">
+      <img src="OKhrakhushi.jpg" alt="OKH Assistant" id="chat-fab-img" />
     </button>
 
-    <!-- Chat panel -->
     <div class="chat-panel" id="chat-panel" role="dialog" aria-label="OKH AI Assistant" aria-modal="false">
       <div class="chat-header">
         <div class="chat-header-info">
-          <span class="chat-header-icon">✦</span>
+          <img src="OKhrakhushi.jpg" alt="OKH" style="width:28px;height:28px;border-radius:50%;object-fit:cover;flex-shrink:0;" />
           <div>
             <div class="chat-header-title">OKH Assistant</div>
             <div class="chat-header-sub">Powered by Gemini</div>
           </div>
         </div>
-        <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">✕</button>
+        <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">&#x2715;</button>
       </div>
 
-      <!-- Chat body -->
       <div class="chat-body" id="chat-body">
         <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
         <div class="chat-typing" id="chat-typing" aria-live="polite"></div>
