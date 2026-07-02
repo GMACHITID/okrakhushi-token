@@ -314,7 +314,7 @@ function toggleChat() {
   const panel = document.getElementById('chat-panel');
   const icon = document.getElementById('chat-fab-icon');
   panel.classList.toggle('open', chatOpen);
-  icon.textContent = chatOpen ? '✕' : '✦';
+  icon.textContent = chatOpen ? '✕' : 'AI';
 
   if (chatOpen) {
     initChatGreeting();
