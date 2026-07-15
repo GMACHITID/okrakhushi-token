@@ -1,8 +1,11 @@
 /*
-  Content-Type: text/html; charset=utf-8
+  Content-Security-Policy: script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://rpc.sepolia.org https://sepolia.etherscan.io https://generativelanguage.googleapis.com;
 
-/*.js
+/style.css
+  Content-Type: text/css; charset=utf-8
+
+/script.js
   Content-Type: application/javascript; charset=utf-8
 
-/*.css
-  Content-Type: text/css; charset=utf-8
+/ethers.umd.min.js
+  Content-Type: application/javascript; charset=utf-8
