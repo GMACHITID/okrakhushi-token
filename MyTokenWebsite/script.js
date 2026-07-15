@@ -380,22 +380,52 @@ function autoResizeTextarea(el) {
   el.style.height = Math.min(el.scrollHeight, 120) + 'px';
 }
 
-// -- Fade-in on scroll --
-const observer = new IntersectionObserver(
-  function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  },
-  { threshold: 0.1 }
-);
+// -- Fade-in on scroll (moved to DOMContentLoaded below) --
 
-document.querySelectorAll('.card, .contract-box').forEach(function(el) {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(24px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  observer.observe(el);
+// -- Wire up all event listeners (no inline onclick handlers) --
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Wallet
+  document.getElementById('wallet-btn').addEventListener('click', connectWallet);
+  document.getElementById('disconnect-btn').addEventListener('click', disconnectWallet);
+
+  // Transfer form
+  document.getElementById('transfer-form').addEventListener('submit', transferTokens);
+
+  // Copy buttons
+  document.getElementById('deposit-copy-btn').addEventListener('click', copyDepositAddress);
+  document.getElementById('copy-contract-btn').addEventListener('click', copyAddress);
+
+  // Chat bubble
+  document.getElementById('chat-fab').addEventListener('click', toggleChat);
+  document.getElementById('chat-close-btn').addEventListener('click', toggleChat);
+  document.getElementById('chat-send-btn').addEventListener('click', sendChatMessage);
+
+  // Chat input: Enter to send, Shift+Enter for newline
+  document.getElementById('chat-input').addEventListener('keydown', handleChatKey);
+
+  // Chat input: auto-resize
+  document.getElementById('chat-input').addEventListener('input', function() {
+    autoResizeTextarea(this);
+  });
+
+  // Fade-in on scroll
+  var fadeObserver = new IntersectionObserver(
+    function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll('.card, .contract-box').forEach(function(el) {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    fadeObserver.observe(el);
+  });
 });

@@ -19,16 +19,15 @@
       <a href="#transfer">Transfer</a>
       <a href="#contract">Contract</a>
     </nav>
-    <button class="wallet-btn" id="wallet-btn" onclick="connectWallet()">Connect Wallet</button>
+    <button class="wallet-btn" id="wallet-btn">Connect Wallet</button>
   </header>
 
-  <!-- Wallet balance panel (hidden until connected) -->
   <div class="wallet-panel" id="wallet-panel" aria-live="polite">
     <div class="wallet-info">
       <span class="wallet-address" id="wallet-address"></span>
       <span class="wallet-balance" id="wallet-balance"></span>
     </div>
-    <button class="disconnect-btn" onclick="disconnectWallet()">Disconnect</button>
+    <button class="disconnect-btn" id="disconnect-btn">Disconnect</button>
   </div>
 
   <main>
@@ -40,9 +39,7 @@
         <p class="tagline">Crunchy, liquid yet solid.<br>A paradox of a coin.</p>
       </div>
       <div class="hero-visual">
-        <div class="coin">
-          <span>OKH</span>
-        </div>
+        <div class="coin"><span>OKH</span></div>
       </div>
     </section>
 
@@ -75,7 +72,7 @@
           <div class="deposit-address-wrapper">
             <div class="deposit-icon">⬇</div>
             <code class="deposit-address" id="deposit-address"></code>
-            <button class="copy-btn" id="deposit-copy-btn" onclick="copyDepositAddress()">Copy</button>
+            <button class="copy-btn" id="deposit-copy-btn">Copy</button>
           </div>
           <p class="deposit-sub">Make sure the sender is on <strong>Ethereum Sepolia Testnet</strong> and sending to the OKH contract.</p>
         </div>
@@ -88,26 +85,14 @@
         <div class="transfer-notice" id="transfer-notice">
           Connect your wallet to send OKH tokens.
         </div>
-        <form id="transfer-form" class="transfer-form" onsubmit="transferTokens(event)" novalidate>
+        <form id="transfer-form" class="transfer-form" novalidate>
           <div class="transfer-field">
             <label for="recipient">Recipient Address</label>
-            <input
-              type="text"
-              id="recipient"
-              placeholder="0x..."
-              autocomplete="off"
-              spellcheck="false"
-            />
+            <input type="text" id="recipient" placeholder="0x..." autocomplete="off" spellcheck="false" />
           </div>
           <div class="transfer-field">
             <label for="amount">Amount <span class="label-hint">OKH</span></label>
-            <input
-              type="number"
-              id="amount"
-              placeholder="0.0"
-              min="0"
-              step="any"
-            />
+            <input type="number" id="amount" placeholder="0.0" min="0" step="any" />
           </div>
           <button type="submit" class="transfer-btn" id="transfer-btn">Send OKH</button>
         </form>
@@ -138,16 +123,11 @@
           <span class="label">Contract Address</span>
           <div class="address-wrapper">
             <code id="contract-address">0x58E9A0c9A997B8276Def81548A003A827A917C91</code>
-            <button class="copy-btn" onclick="copyAddress()">Copy</button>
+            <button class="copy-btn" id="copy-contract-btn">Copy</button>
           </div>
         </div>
-        <a
-          class="etherscan-btn"
-          href="https://sepolia.etherscan.io/address/0x58E9A0c9A997B8276Def81548A003A827A917C91"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View on Etherscan ↗
+        <a class="etherscan-btn" href="https://sepolia.etherscan.io/address/0x58E9A0c9A997B8276Def81548A003A827A917C91" target="_blank" rel="noopener noreferrer">
+          View on Etherscan
         </a>
       </div>
     </section>
@@ -157,7 +137,7 @@
     <p>Okhrakhushi &copy; 2026 · <span class="footer-symbol">$OKH</span> · Deployed on Sepolia</p>
   </footer>
 
-  <!-- ── AI Assistant Widget ── -->
+  <!-- AI Assistant Widget -->
   <style>
     #chat-widget{position:fixed!important;bottom:1.5rem!important;right:1.5rem!important;z-index:2147483647!important;display:flex!important;flex-direction:column-reverse!important;align-items:flex-end!important;gap:.75rem!important;pointer-events:auto!important;}
     #chat-fab{width:64px!important;height:64px!important;border-radius:50%!important;border:2px solid #9dd463!important;padding:0!important;cursor:pointer!important;box-shadow:0 4px 24px rgba(122,182,72,.7)!important;overflow:hidden!important;background:#13131a!important;display:block!important;flex-shrink:0!important;}
@@ -165,9 +145,8 @@
   </style>
 
   <div id="chat-widget">
-
-    <button id="chat-fab" onclick="toggleChat()" aria-label="Open AI Assistant" title="Ask the OKH Assistant">
-      <img src="OKhrakhushi.jpg" alt="OKH Assistant" id="chat-fab-img" />
+    <button id="chat-fab" aria-label="Open AI Assistant" title="Ask the OKH Assistant">
+      <img src="OKhrakhushi.jpg" alt="OKH Assistant" />
     </button>
 
     <div class="chat-panel" id="chat-panel" role="dialog" aria-label="OKH AI Assistant" aria-modal="false">
@@ -179,27 +158,20 @@
             <div class="chat-header-sub">Powered by Gemini</div>
           </div>
         </div>
-        <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">&#x2715;</button>
+        <button class="chat-close-btn" id="chat-close-btn" aria-label="Close chat">&#x2715;</button>
       </div>
 
       <div class="chat-body" id="chat-body">
         <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
         <div class="chat-typing" id="chat-typing" aria-live="polite"></div>
         <div class="chat-input-row">
-          <textarea
-            id="chat-input"
-            class="chat-input"
-            placeholder="Ask anything about OKH…"
-            rows="1"
-            onkeydown="handleChatKey(event)"
-            oninput="autoResizeTextarea(this)"
-          ></textarea>
-          <button class="chat-send-btn" id="chat-send-btn" onclick="sendChatMessage()" aria-label="Send message">&#10148;</button>
+          <textarea id="chat-input" class="chat-input" placeholder="Ask anything about OKH..." rows="1"></textarea>
+          <button class="chat-send-btn" id="chat-send-btn" aria-label="Send message">&#10148;</button>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
