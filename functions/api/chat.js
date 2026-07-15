@@ -1,4 +1,4 @@
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_MODEL = 'gemini-1.5-flash';
 
 const SYSTEM_PROMPT = `You are the official AI assistant for the Okhrakhushi (OKH) token website.
 
