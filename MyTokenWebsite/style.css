@@ -1,4 +1,4 @@
-/* ── Reset & Base ── */
+/* Reset & Base */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -29,7 +29,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── Starfield background ── */
+/* Starfield background */
 .stars {
   position: fixed;
   inset: 0;
@@ -48,7 +48,7 @@ body {
   z-index: 0;
 }
 
-/* ── Header ── */
+/* Header */
 header {
   position: sticky;
   top: 0;
@@ -86,7 +86,7 @@ nav a:hover {
   color: var(--accent-light);
 }
 
-/* ── Wallet button ── */
+/* Wallet button */
 .wallet-btn {
   background: transparent;
   border: 1px solid var(--accent);
@@ -112,7 +112,7 @@ nav a:hover {
   cursor: default;
 }
 
-/* ── Wallet panel ── */
+/* Wallet panel */
 .wallet-panel {
   display: none;
   position: relative;
@@ -164,7 +164,7 @@ nav a:hover {
   color: #e05555;
 }
 
-/* ── Hero ── */
+/* Hero */
 .hero {
   position: relative;
   z-index: 1;
@@ -218,7 +218,7 @@ nav a:hover {
   max-width: 420px;
 }
 
-/* ── Coin animation ── */
+/* Coin animation */
 .hero-visual {
   flex-shrink: 0;
 }
@@ -254,7 +254,7 @@ nav a:hover {
   100% { box-shadow: 0 0 40px var(--accent-glow), 0 0 80px rgba(201,168,76,0.1), inset 0 2px 8px rgba(255,255,255,0.2); }
 }
 
-/* ── Cards ── */
+/* Cards */
 .card-section {
   position: relative;
   z-index: 1;
@@ -297,7 +297,7 @@ nav a:hover {
   font-size: 0.95rem;
 }
 
-/* ── Deposit Section ── */
+/* Deposit Section */
 .deposit-section {
   position: relative;
   z-index: 1;
@@ -328,7 +328,7 @@ nav a:hover {
 }
 
 .deposit-content {
-  display: none; /* shown via JS when wallet is connected */
+  display: none;
   flex-direction: column;
   gap: 1.25rem;
 }
@@ -374,7 +374,7 @@ nav a:hover {
   color: var(--text);
 }
 
-/* ── Transfer Section ── */
+/* Transfer Section */
 .transfer-section {
   position: relative;
   z-index: 1;
@@ -405,7 +405,7 @@ nav a:hover {
 }
 
 .transfer-form {
-  display: none; /* shown via JS when wallet is connected */
+  display: none;
   flex-direction: column;
   gap: 1.25rem;
 }
@@ -454,7 +454,6 @@ nav a:hover {
   color: #44445a;
 }
 
-/* Remove number input arrows */
 .transfer-field input[type="number"]::-webkit-inner-spin-button,
 .transfer-field input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -493,24 +492,12 @@ nav a:hover {
   min-height: 1.5rem;
 }
 
-.transfer-status.pending {
-  color: var(--muted);
-}
+.transfer-status.pending { color: var(--muted); }
+.transfer-status.success { color: var(--accent-light); }
+.transfer-status.success a { color: var(--accent-light); text-decoration: underline; }
+.transfer-status.error { color: #e05555; }
 
-.transfer-status.success {
-  color: var(--accent-light);
-}
-
-.transfer-status.success a {
-  color: var(--accent-light);
-  text-decoration: underline;
-}
-
-.transfer-status.error {
-  color: #e05555;
-}
-
-/* ── Contract Section ── */
+/* Contract Section */
 .contract-section {
   position: relative;
   z-index: 1;
@@ -615,9 +602,7 @@ code#contract-address {
   opacity: 0.85;
 }
 
-/* ── AI Chat Widget ── */
-
-/* Chat panel */
+/* AI Chat Widget */
 .chat-panel {
   width: 360px;
   max-width: calc(100vw - 2rem);
@@ -630,8 +615,6 @@ code#contract-address {
   overflow: hidden;
   max-height: 520px;
   z-index: 99999;
-
-  /* Hidden by default */
   opacity: 0;
   pointer-events: none;
   transform: translateY(12px) scale(0.97);
@@ -645,7 +628,6 @@ code#contract-address {
   transform: translateY(0) scale(1);
 }
 
-/* Header */
 .chat-header {
   display: flex;
   align-items: center;
@@ -660,11 +642,6 @@ code#contract-address {
   display: flex;
   align-items: center;
   gap: 0.65rem;
-}
-
-.chat-header-icon {
-  font-size: 1.2rem;
-  color: var(--accent-light);
 }
 
 .chat-header-title {
@@ -694,7 +671,6 @@ code#contract-address {
   background: var(--border);
 }
 
-/* Chat body */
 .chat-body {
   display: flex;
   flex-direction: column;
@@ -712,18 +688,10 @@ code#contract-address {
   scroll-behavior: smooth;
 }
 
-.chat-messages::-webkit-scrollbar {
-  width: 4px;
-}
-.chat-messages::-webkit-scrollbar-track {
-  background: transparent;
-}
-.chat-messages::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
-/* Message bubbles */
 .chat-bubble {
   max-width: 88%;
   padding: 0.6rem 0.85rem;
@@ -764,7 +732,6 @@ code#contract-address {
   border-bottom-left-radius: 4px;
 }
 
-/* Typing indicator */
 .chat-typing {
   font-size: 0.78rem;
   color: var(--muted);
@@ -773,7 +740,6 @@ code#contract-address {
   font-style: italic;
 }
 
-/* Input row */
 .chat-input-row {
   display: flex;
   align-items: flex-end;
@@ -800,13 +766,8 @@ code#contract-address {
   overflow-y: auto;
 }
 
-.chat-input:focus {
-  border-color: var(--accent);
-}
-
-.chat-input::placeholder {
-  color: #44445a;
-}
+.chat-input:focus { border-color: var(--accent); }
+.chat-input::placeholder { color: #44445a; }
 
 .chat-send-btn {
   background: var(--accent);
@@ -824,16 +785,10 @@ code#contract-address {
   transition: opacity 0.2s;
 }
 
-.chat-send-btn:hover:not(:disabled) {
-  opacity: 0.85;
-}
+.chat-send-btn:hover:not(:disabled) { opacity: 0.85; }
+.chat-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-.chat-send-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-/* ── Footer ── */
+/* Footer */
 footer {
   position: relative;
   z-index: 1;
@@ -849,24 +804,14 @@ footer {
   font-weight: 700;
 }
 
-/* ── Responsive ── */
+/* Responsive */
 @media (max-width: 700px) {
   .hero {
     flex-direction: column;
     text-align: center;
     padding: 4rem 1.5rem 3rem;
   }
-
-  .tagline {
-    margin: 0 auto;
-  }
-
-  .contract-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  nav {
-    gap: 1rem;
-  }
+  .tagline { margin: 0 auto; }
+  .contract-row { flex-direction: column; align-items: flex-start; }
+  nav { gap: 1rem; }
 }
