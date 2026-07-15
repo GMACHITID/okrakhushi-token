@@ -323,7 +323,18 @@ async function sendChatMessage() {
       body: JSON.stringify({ history: chatHistory })
     });
 
-    const data = await response.json();
+    // Guard against empty or non-JSON responses
+    const text = await response.text();
+    if (!text) {
+      throw new Error('No response from server. The chat function may not be deployed yet.');
+    }
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new Error('Server returned an unexpected response: ' + text.slice(0, 100));
+    }
 
     if (!response.ok) {
       throw new Error(data?.error || 'Server error ' + response.status);
